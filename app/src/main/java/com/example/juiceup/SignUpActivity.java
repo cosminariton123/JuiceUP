@@ -3,6 +3,7 @@ package com.example.juiceup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.service.autofill.RegexValidator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -57,33 +60,39 @@ public class SignUpActivity extends AppCompatActivity {
                ConnectionDB database = ConnectionDB.getInstance();
                Connection connection = database.getConnection();
 
-               if (connection != null){
+               Pattern email_pattern = Pattern.compile("^[^@]+@[^@.]+[.][^@]+$");
+               Matcher email_matcher = email_pattern.matcher(email);
 
-                   try {
-                       Statement statement = connection.createStatement();
-                       ResultSet resultSet = statement.executeQuery("SELECT email FROM users WHERE email like '" + email + "'");
-                       if (resultSet.next()){
-                           create_account_TextView.setText("There exists an account with this email. Try again or login.");
+               if (email_matcher.matches()) {
+                   if (connection != null) {
+
+                       try {
+                           Statement statement = connection.createStatement();
+                           ResultSet resultSet = statement.executeQuery("SELECT email FROM users WHERE email like '" + email + "'");
+                           if (resultSet.next()) {
+                               create_account_TextView.setText("There exists an account with this email. Try again or login.");
+                               currentUser.logout();
+                           } else {
+
+                               statement.executeUpdate("INSERT INTO users(email, password, salt, last_name, first_name, trust_score) VALUES(" +
+                                       "'" + currentUser.get_email() + "','" + currentUser.get_password() + "','" + currentUser.get_salt() +
+                                       "','" + currentUser.get_last_name() + "','" + currentUser.get_first_name() + "'," +
+                                       currentUser.get_trust_score() + ")");
+
+                               create_account_TextView.setText("Sign up succesfull");
+
+                           }
+                       } catch (SQLException e) {
+                           e.printStackTrace();
+                           create_account_TextView.setText("SQL statement error");
                        }
-                       else{
 
-                           statement.executeUpdate("INSERT INTO users(email, password, salt, last_name, first_name, trust_score) VALUES("+
-                                                    "'" + currentUser.get_email()+ "','" + currentUser.get_password()+ "','" + currentUser.get_salt() +
-                                                    "','" + currentUser.get_last_name() + "','" + currentUser.get_first_name() + "'," +
-                                                    currentUser.get_trust_score() +")");
-
-                           create_account_TextView.setText("Sign up succesfull");
-
-                       }
+                   } else {
+                       create_account_TextView.setText("Connection is null");
                    }
-                   catch (SQLException e){
-                       e.printStackTrace();
-                       create_account_TextView.setText("SQL statement error");
-                   }
-
                }
                else{
-                   create_account_TextView.setText("Connection is null");
+                   create_account_TextView.setText("Not a valid mail");
                }
             }
         });
