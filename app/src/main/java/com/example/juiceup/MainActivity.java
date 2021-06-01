@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -17,18 +18,21 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Currency;
 import java.util.jar.Manifest;
 
 public class MainActivity extends AppCompatActivity {
 
 
     Button view_map_button;
-    Button sign_button;
+    Button sign_in_button;
+    Button logout_button;
 
-    Button bd_button_test;
-    TextView bd_text_view_test;
-    TextView bd_text_view_test_2;
-    TextView bd_text_view_test_3;
+    TextView sign_up_text_view;
+    TextView welcome_text_view;
+    TextView dont_have_account_text_view;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,78 +41,63 @@ public class MainActivity extends AppCompatActivity {
 
 
         view_map_button = findViewById(R.id.view_map_button);
-        sign_button = findViewById(R.id.sign_button);
-
-        bd_button_test = findViewById(R.id.bd_button_test);
-        bd_text_view_test = findViewById(R.id.bd_text_view_test);
-        bd_text_view_test_2 = findViewById(R.id.bd_text_view_test_2);
-        bd_text_view_test_3 = findViewById(R.id.bd_text_view_test_3);
-
+        welcome_text_view = findViewById(R.id.welcome_text);
+        sign_in_button = findViewById(R.id.sign_in_button);
+        sign_up_text_view = findViewById(R.id.sign_up_text_view);
+        dont_have_account_text_view = findViewById(R.id.dont_have_account_text_view);
+        logout_button = findViewById(R.id.logout_button);
 
 
-        bd_button_test.setOnClickListener(new View.OnClickListener() {
+
+        sign_in_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                String ip = "192.168.56.1";
-                String port = "1433";
-                String Clases = "net.sourceforge.jtds.jdbc.Driver";
-                String database = "juiceupdatabase";
-                String username = "client";
-                String password = "123";
-                String url = "jdbc:jtds:sqlserver://" +ip + ":" + port + "/" + database;
-
-                Connection connection = null;
-
-
-
-
-
-
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-                try {
-
-                    Class.forName(Clases);
-                    connection = DriverManager.getConnection(url, username, password);
-                    bd_text_view_test.setText("Succes");
-                }
-                catch (ClassNotFoundException e){
-                    e.printStackTrace();
-                    bd_text_view_test.setText("Error");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    bd_text_view_test.setText("Failure");
-                }
-
-
-
-
-
-
-
-                if (connection != null){
-
-                    try {
-                        Statement statement = connection.createStatement();
-                        ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
-                        while (resultSet.next()){
-                            bd_text_view_test.setText(resultSet.getString(1));
-                        }
-                    }
-
-                    catch (SQLException e){
-                        e.printStackTrace();
-                    }
-
-                }
-
-                else{
-                    bd_text_view_test.setText("Connection is null");
-                }
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
+
+
+        sign_up_text_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
+            }
+        });
+
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CurrentUser currentUser = CurrentUser.getInstance();
+                currentUser.logout();
+
+                onResume();
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        CurrentUser currentUser = CurrentUser.getInstance();
+        if (currentUser.get_is_logged()){
+            welcome_text_view.setText("Welcome to JuiceUP, " + currentUser.get_first_name());
+            dont_have_account_text_view.setVisibility(View.GONE);
+            sign_up_text_view.setVisibility(View.GONE);
+            sign_in_button.setVisibility(View.GONE);
+            logout_button.setVisibility(View.VISIBLE);
+        }
+        else{
+            welcome_text_view.setText("Welcome to JuiceUP");
+            dont_have_account_text_view.setVisibility(View.VISIBLE);
+            sign_up_text_view.setVisibility(View.VISIBLE);
+            sign_in_button.setVisibility(View.VISIBLE);
+            logout_button.setVisibility(View.GONE);
+        }
     }
 }
