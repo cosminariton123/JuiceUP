@@ -77,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        view_map_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+            }
+        });
+
     }
 
 

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsActivity" />
+
+    <Button
+        android:id="@+id/add_marker_to_database_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#359c5e"
+        android:padding="8dp"
+        android:text="Add marker to database"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/viewdb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_marker_to_database_button"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="182dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#359c5e"
+        android:padding="8dp"
+        android:text="View real time database"
+        android:textColor="#ffffff" />
+
+    <EditText
+        android:id="@+id/editText_where_do_you_want_to_go"
+        android:layout_width="272dp"
+        android:layout_height="53dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="#359c5e"
+        android:ems="10"
+        android:hint="Where do you want to go?"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/GO_button"
+        android:layout_width="136dp"
+        android:layout_height="58dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/editText_where_do_you_want_to_go"
+        android:autoSizeTextType="none"
+        android:text="GO" />
+
+
+</RelativeLayout>
