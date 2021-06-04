@@ -24,13 +24,13 @@ import java.util.jar.Manifest;
 public class MainActivity extends AppCompatActivity {
 
 
-    Button view_map_button;
-    Button sign_in_button;
-    Button logout_button;
+    private Button view_map_button;
+    private Button sign_in_button;
+    private Button logout_button;
 
-    TextView sign_up_text_view;
-    TextView welcome_text_view;
-    TextView dont_have_account_text_view;
+    private TextView sign_up_text_view;
+    private TextView welcome_text_view;
+    private TextView dont_have_account_text_view;
 
 
 

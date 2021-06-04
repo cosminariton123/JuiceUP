@@ -16,10 +16,10 @@ import java.sql.Statement;
 public class LoginActivity extends AppCompatActivity {
 
 
-    Button login_register;
-    EditText edit_text_email;
-    EditText edit_text_password;
-    TextView enter_credentials_textview;
+    private Button login_register;
+    private EditText edit_text_email;
+    private EditText edit_text_password;
+    private TextView enter_credentials_textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +66,16 @@ public class LoginActivity extends AppCompatActivity {
                                 enter_credentials_textview.setText("Authentification succesful!");
 
                                 //Taking the rest of the information from the server
-                                resultSet = statement.executeQuery("SELECT last_name, first_name, trust_score FROM users WHERE email LIKE '" + email_address + "'");
+                                resultSet = statement.executeQuery("SELECT last_name, first_name, trust_score, car_max_km_range FROM users WHERE email LIKE '" + email_address + "'");
                                 resultSet.next();
 
                                 String last_name = resultSet.getString(1);
                                 String first_name = resultSet.getString(2);
                                 Integer trust_score = resultSet.getInt(3);
+                                Integer car_max_km_range = resultSet.getInt(4);
 
                                 CurrentUser currentUser = CurrentUser.getInstance();
-                                currentUser.set_details(email_address, password, stored_salt, first_name, last_name, trust_score);
+                                currentUser.set_details(email_address, password, stored_salt, first_name, last_name, car_max_km_range, trust_score);
                                 enter_credentials_textview.setText("Authentification succesfull");
                             } else
                                 enter_credentials_textview.setText("Authentification failed(password). Try again");

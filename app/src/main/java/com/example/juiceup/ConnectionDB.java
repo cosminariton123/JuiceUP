@@ -11,14 +11,14 @@ public class ConnectionDB {
     private static ConnectionDB instance = new ConnectionDB();
 
 
-    String ip;
-    String port;
-    String Driver;
-    String database;
-    String username;
-    String password;
-    String connectionString;
-    Connection connection;
+    private String ip;
+    private String port;
+    private String Driver;
+    private String database;
+    private String username;
+    private String password;
+    private String connectionString;
+    private Connection connection;
 
 
     private ConnectionDB(){
