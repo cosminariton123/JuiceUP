@@ -1,12 +1,14 @@
 package com.example.juiceup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -64,10 +66,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private EditText editText_where_do_you_want_to_go;
 
+    private Marker last_marker;
+
+
+    //Queue with all the charghing stations
+    private Queue<ChargingStation> chargingStations = new LinkedList<ChargingStation>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        last_marker = null;
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -91,7 +101,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
 
+                if (last_marker != null)
+                    last_marker.remove();   //if users selects another marker, delete the last one
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);   //set marker position
+                markerOptions.draggable(true);
+                markerOptions.title("Location of your charghing station");
+
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));  //zoom the camera
+
+                last_marker = mMap.addMarker(markerOptions);  //add marker on map
+            }  });
 
 
 
@@ -99,10 +125,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         add_marker_to_database_button = findViewById(R.id.add_marker_to_database_button);
         GO_button = findViewById(R.id.GO_button);
         editText_where_do_you_want_to_go = findViewById(R.id.editText_where_do_you_want_to_go);
+        //editText_where_do_you_want_to_go.getBackground().setAlpha(100);
 
 
-        //Queue with all the charghing stations
-        Queue<ChargingStation> chargingStations = new LinkedList<ChargingStation>();
+        //Get_all_charghin_stations_from_the_db
         get_charghing_stations_from_db(chargingStations);
 
 
@@ -117,6 +143,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Emulator always shows current location in USA,at Google
         LatLng curent_user_location = new LatLng(44.4268, 26.1025);
 
+
+
+        add_marker_to_database_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CurrentUser currentUser = CurrentUser.getInstance();
+
+                if (last_marker == null)
+                    Toast.makeText(MapsActivity.this, "First place a marker on the map\nwhere the charghing station is.", Toast.LENGTH_LONG).show();
+                else if (!currentUser.get_is_logged()){
+                    Toast.makeText(MapsActivity.this, "You have to be logged in\nto add markers to the database", Toast.LENGTH_LONG).show();
+                }
+                else
+                    {
+                        LatLng marker_position = last_marker.getPosition();
+
+                        Intent intent = new Intent(MapsActivity.this, AddMarker.class);
+                        intent.putExtra("marker_position_x" , marker_position.latitude);
+                        intent.putExtra("marker_position_y", marker_position.longitude);
+                        startActivityForResult(intent, 1);
+                }
+            }
+        });
         // Add a marker in Sydney and move the camera
 
         LatLng sydney = new LatLng(44.4268, 26.1025);
@@ -204,4 +253,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    private void add_charghing_station_to_db(ChargingStation chargingStation){
+
+        ConnectionDB connectionDB = ConnectionDB.getInstance();
+        Connection connection = connectionDB.getConnection();
+        CurrentUser currentUser = CurrentUser.getInstance();
+
+        if (connection != null){
+
+            try{
+                Statement statement = connection.createStatement();
+
+                statement.executeUpdate("INSERT INTO chargingstations(name, set_by_user  ,x_coordinate, y_coordinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh) VALUES('" +
+                        chargingStation.get_name() + "','" + currentUser.get_email() + "'," + chargingStation.get_x_coordinate() + "," +
+                        chargingStation.get_y_coordinate() + "," + chargingStation.get_guarded() + "," + chargingStation.get_parking_number_of_places() + "," +
+                        chargingStation.get_type2() + "," + chargingStation.get_wall() + "," + chargingStation.get_supercharger() + "," + chargingStation.get_outputkwh() + ")");
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                Toast.makeText(MapsActivity.this, "SQL statement error", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else
+            Toast.makeText(MapsActivity.this, "No connection", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == 1){
+            if (resultCode == RESULT_OK){
+                ChargingStation chargingStation = new ChargingStation();
+                chargingStation.deserialize_set(data.getStringExtra("charghingstation"));
+                add_charghing_station_to_db(chargingStation);
+                Toast.makeText(MapsActivity.this, "Added",Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(getIntent());
+            }
+            if (resultCode == RESULT_CANCELED){
+                Toast.makeText(MapsActivity.this, "Nothing was modified", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

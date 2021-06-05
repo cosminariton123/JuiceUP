@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Vector;
+
 public class ChargingStation {
 
     private Integer id;
@@ -101,6 +103,31 @@ public class ChargingStation {
     public LatLng get_lat_lang(){
         LatLng latLng = new LatLng(x_coordinate, y_coordinate);
         return  latLng;
+    }
+
+    public String serialize(){
+        String serialized = "";
+
+        serialized += id.toString() + ",";
+        serialized += name + ",";
+        serialized += set_by_user + ",";
+        serialized += x_coordinate.toString() + ",";
+        serialized += y_coordinate.toString() + ",";
+        serialized += guarded.toString() + ",";
+        serialized += praking_number_of_places.toString() + ",";
+        serialized += type2.toString() + ",";
+        serialized += wall.toString() + ",";
+        serialized += supercharger.toString() + ",";
+        serialized += outputkwh.toString();
+
+        return serialized;
+    }
+
+    public void deserialize_set(String serialized_data){
+        String[] vec = serialized_data.split(",", 100);
+
+        set_values(Integer.parseInt(vec[0]) , vec[1], vec[2], Double.parseDouble(vec[3]), Double.parseDouble(vec[4]),
+                Integer.parseInt(vec[5]), Integer.parseInt(vec[6]), Integer.parseInt(vec[7]), Integer.parseInt(vec[8]), Integer.parseInt(vec[9]), Integer.parseInt(vec[10]));
     }
 
 }
