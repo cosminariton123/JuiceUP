@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.CryptoPrimitive;
 import java.sql.Connection;
@@ -66,17 +67,25 @@ public class LoginActivity extends AppCompatActivity {
                                 enter_credentials_textview.setText("Authentification succesful!");
 
                                 //Taking the rest of the information from the server
-                                resultSet = statement.executeQuery("SELECT last_name, first_name, trust_score, car_max_km_range FROM users WHERE email LIKE '" + email_address + "'");
+                                resultSet = statement.executeQuery("SELECT last_name, first_name, trust_score, car_max_km_range, guarded_place_preference, nr_of_parking_spots_preference, type2_preference, wall_preference, supercharger_preference, min_kwh_preference FROM users WHERE email LIKE '" + email_address + "'");
                                 resultSet.next();
 
                                 String last_name = resultSet.getString(1);
                                 String first_name = resultSet.getString(2);
                                 Integer trust_score = resultSet.getInt(3);
                                 Integer car_max_km_range = resultSet.getInt(4);
+                                Integer guarded_place_preference = resultSet.getInt(5);
+                                Integer nr_of_parking_spots_preference = resultSet.getInt(6);
+                                Integer type2_preference = resultSet.getInt(7);
+                                Integer wall_preference = resultSet.getInt(8);
+                                Integer supercharger_preference = resultSet.getInt(9);
+                                Integer min_kwh_preference = resultSet.getInt(10);
 
                                 CurrentUser currentUser = CurrentUser.getInstance();
-                                currentUser.set_details(email_address, password, stored_salt, first_name, last_name, car_max_km_range, trust_score);
-                                enter_credentials_textview.setText("Authentification succesfull");
+                                currentUser.set_details(email_address, password, stored_salt, first_name, last_name, car_max_km_range, guarded_place_preference, nr_of_parking_spots_preference,
+                                        type2_preference, wall_preference, supercharger_preference, min_kwh_preference, trust_score);
+                                Toast.makeText(LoginActivity.this, "Authentification succesfull", Toast.LENGTH_SHORT).show();
+                                finish();
                             } else
                                 enter_credentials_textview.setText("Authentification failed(password). Try again");
                         }

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -51,35 +52,44 @@ public class AddMarker extends AppCompatActivity {
         add_to_db_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer guarded = 0;
-                if (yes_radio_button.isChecked())
-                    guarded = 1;
 
-                Integer parking_spots = Integer.parseInt(editText_nr_of_parking_spots.getText().toString());
-                Integer type2 = 0;
-                Integer wall = 0;
-                Integer supercharger = 0;
+                if (editText_nr_of_parking_spots.getText().toString().equals("") || editText_output_kWh.getText().toString().equals("") || editText_charghing_station_name.getText().toString().equals(""))
+                    Toast.makeText(AddMarker.this, "All fields are required", Toast.LENGTH_SHORT).show();
+                else if (Integer.parseInt(editText_nr_of_parking_spots.getText().toString()) < 0 || Integer.parseInt(editText_output_kWh.getText().toString()) < 0)
+                    Toast.makeText(AddMarker.this, "Negative values aren't allowed" ,Toast.LENGTH_SHORT).show();
+                else
+                    {
 
-                if (switch_Type2.isChecked())
-                    type2 = 1;
-                if (switch_wall.isChecked())
-                    wall = 1;
-                if (switch_supercharger.isChecked())
-                    supercharger = 1;
+                    Integer guarded = 0;
+                    if (yes_radio_button.isChecked())
+                        guarded = 1;
 
-                CurrentUser currentUser = CurrentUser.getInstance();
+                    Integer parking_spots = Integer.parseInt(editText_nr_of_parking_spots.getText().toString());
+                    Integer type2 = 0;
+                    Integer wall = 0;
+                    Integer supercharger = 0;
 
-                Integer outputkwh = Integer.parseInt(editText_output_kWh.getText().toString());
+                    if (switch_Type2.isChecked())
+                        type2 = 1;
+                    if (switch_wall.isChecked())
+                        wall = 1;
+                    if (switch_supercharger.isChecked())
+                        supercharger = 1;
 
-                String name = editText_charghing_station_name.getText().toString();
+                    CurrentUser currentUser = CurrentUser.getInstance();
 
-                ChargingStation chargingStation = new ChargingStation();
-                chargingStation.set_values(0, name, currentUser.get_email(), x, y, guarded, parking_spots, type2, wall, supercharger, outputkwh);
+                    Integer outputkwh = Integer.parseInt(editText_output_kWh.getText().toString());
 
-                Intent intent_result = new Intent();
-                intent_result.putExtra("charghingstation", chargingStation.serialize());
-                setResult(RESULT_OK, intent_result);
-                finish();
+                    String name = editText_charghing_station_name.getText().toString();
+
+                    ChargingStation chargingStation = new ChargingStation();
+                    chargingStation.set_values(0, name, currentUser.get_email(), x, y, guarded, parking_spots, type2, wall, supercharger, outputkwh);
+
+                    Intent intent_result = new Intent();
+                    intent_result.putExtra("charghingstation", chargingStation.serialize());
+                    setResult(RESULT_OK, intent_result);
+                    finish();
+                }
             }
         });
 

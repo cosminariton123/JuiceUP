@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private Button view_map_button;
     private Button sign_in_button;
     private Button logout_button;
+    private Button account_preferences_button;
+    private Button view_preferences_button;
 
     private TextView sign_up_text_view;
     private TextView welcome_text_view;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         sign_up_text_view = findViewById(R.id.sign_up_text_view);
         dont_have_account_text_view = findViewById(R.id.dont_have_account_text_view);
         logout_button = findViewById(R.id.logout_button);
+        account_preferences_button = findViewById(R.id.account_preferences_button);
+        view_preferences_button = findViewById(R.id.view_preferences_button);
 
 
 
@@ -77,6 +81,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        account_preferences_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AccountPreferencesActivity.class));
+            }
+        });
+
+
+        view_preferences_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ViewPreferencesActivity.class));
+            }
+        });
+
         view_map_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
             sign_up_text_view.setVisibility(View.GONE);
             sign_in_button.setVisibility(View.GONE);
             logout_button.setVisibility(View.VISIBLE);
+            account_preferences_button.setVisibility(View.VISIBLE);
+            view_preferences_button.setVisibility(View.VISIBLE);
         }
         else{
             welcome_text_view.setText("Welcome to JuiceUP");
@@ -105,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
             sign_up_text_view.setVisibility(View.VISIBLE);
             sign_in_button.setVisibility(View.VISIBLE);
             logout_button.setVisibility(View.GONE);
+            account_preferences_button.setVisibility(View.GONE);
+            view_preferences_button.setVisibility(View.GONE);
         }
     }
 }

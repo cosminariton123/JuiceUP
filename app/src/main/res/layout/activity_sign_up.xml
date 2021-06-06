@@ -77,27 +77,14 @@
 
     <Button
         android:id="@+id/sign_up_button"
-        android:layout_width="143dp"
-        android:layout_height="59dp"
+        android:layout_width="166dp"
+        android:layout_height="55dp"
         android:autoSizeTextType="uniform"
         android:text="Sign up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.937" />
+        app:layout_constraintVertical_bias="0.813" />
 
-    <EditText
-        android:id="@+id/edit_car_max_km_range"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Maximum vehicle range"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.753" />
 </androidx.constraintlayout.widget.ConstraintLayout>

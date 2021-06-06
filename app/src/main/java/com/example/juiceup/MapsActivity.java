@@ -128,7 +128,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         add_marker_to_database_button = findViewById(R.id.add_marker_to_database_button);
         GO_button = findViewById(R.id.GO_button);
         editText_where_do_you_want_to_go = findViewById(R.id.editText_where_do_you_want_to_go);
-        //editText_where_do_you_want_to_go.getBackground().setAlpha(100);
 
 
         //Get_all_charghin_stations_from_the_db
