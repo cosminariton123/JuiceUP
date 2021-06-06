@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -49,6 +50,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -70,7 +72,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     //Queue with all the charghing stations
-    private Queue<ChargingStation> chargingStations = new LinkedList<ChargingStation>();
+    private ArrayList<ChargingStation> chargingStations = new ArrayList<ChargingStation>();
+    private  ArrayList<Marker> chargingStations_markers = new ArrayList<Marker>();
 
 
     @Override
@@ -114,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 markerOptions.title("Location of your charghing station");
 
 
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));  //zoom the camera
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));  //zoom the camera
 
                 last_marker = mMap.addMarker(markerOptions);  //add marker on map
             }  });
@@ -134,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for (ChargingStation elem :
                 chargingStations) {
-            mMap.addMarker(new MarkerOptions().position(elem.get_lat_lang()).title(elem.get_name()));
+            chargingStations_markers.add(mMap.addMarker(new MarkerOptions().position(elem.get_lat_lang()).title(elem.get_name())));
         }
 
 
@@ -166,55 +169,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-        // Add a marker in Sydney and move the camera
-
-        LatLng sydney = new LatLng(44.4268, 26.1025);
-        LatLng melbourne = new LatLng(30, 30);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.addMarker(new MarkerOptions().position(melbourne).title("Marker in melb"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-
-        Queue<LatLng> queue = new LinkedList<LatLng>();
-
-        //queue.add(new LatLng(47.4979, 19.0402));
-        queue.add(new LatLng(52.3676, 4.9041));
-        queue.add(new LatLng(96.3676, 36.9041));
-        queue.add(new LatLng(11, 50));
-        queue.add(new LatLng(97, 48));
-        queue.add(new LatLng(28, 54));
-        queue.add(new LatLng(0, 0));
-        queue.add(new LatLng(2, 2));
-
-
-        for (LatLng elem :
-                queue) {
-            mMap.addMarker(new MarkerOptions().position(elem).title("A"));
-        }
-
-        DistancesAndGeocodings distancesAndGeocodings = new DistancesAndGeocodings();
-
-        Double distanta = distancesAndGeocodings.get_spherical_distance(sydney, melbourne);
-        Queue<Double> distance = distancesAndGeocodings.get_road_distance(sydney, queue);
-
-
-        String output = "";
-        while (!distance.isEmpty()) {
-
-            output += distance.remove().toString();
-            output += "\n";
-        }
-
-        Toast.makeText(this, output, Toast.LENGTH_LONG).show();
-
-
-
 
 
     }
 
 
-    private void get_charghing_stations_from_db(Queue<ChargingStation> chargingStations) {
+    private void get_charghing_stations_from_db(ArrayList<ChargingStation> chargingStations) {
 
         ConnectionDB connectionDB = ConnectionDB.getInstance();
         Connection connection = connectionDB.getConnection();
@@ -264,10 +224,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try{
                 Statement statement = connection.createStatement();
 
-                statement.executeUpdate("INSERT INTO chargingstations(name, set_by_user  ,x_coordinate, y_coordinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh) VALUES('" +
-                        chargingStation.get_name() + "','" + currentUser.get_email() + "'," + chargingStation.get_x_coordinate() + "," +
-                        chargingStation.get_y_coordinate() + "," + chargingStation.get_guarded() + "," + chargingStation.get_parking_number_of_places() + "," +
-                        chargingStation.get_type2() + "," + chargingStation.get_wall() + "," + chargingStation.get_supercharger() + "," + chargingStation.get_outputkwh() + ")");
+
+                ResultSet resultSet = statement.executeQuery("SELECT id FROM chargingstations WHERE x_coordinate like " + chargingStation.get_x_coordinate() + " AND y_coordinate LIKE " +
+                        chargingStation.get_x_coordinate());
+
+                if (resultSet.next()){
+                    Toast.makeText(MapsActivity.this, "There aleready exists a charghing station at this coordinates", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    statement.executeUpdate("INSERT INTO chargingstations(name, set_by_user  ,x_coordinate, y_coordinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh) VALUES('" +
+                            chargingStation.get_name() + "','" + currentUser.get_email() + "'," + chargingStation.get_x_coordinate() + "," +
+                            chargingStation.get_y_coordinate() + "," + chargingStation.get_guarded() + "," + chargingStation.get_parking_number_of_places() + "," +
+                            chargingStation.get_type2() + "," + chargingStation.get_wall() + "," + chargingStation.get_supercharger() + "," + chargingStation.get_outputkwh() + ")");
+                    set_station_connections_in_db(chargingStation);
+                    Toast.makeText(MapsActivity.this, "Added",Toast.LENGTH_SHORT).show();
+                }
+
 
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -278,6 +250,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(MapsActivity.this, "No connection", Toast.LENGTH_SHORT).show();
     }
 
+    public void set_station_connections_in_db(ChargingStation chargingStation) throws SQLException{
+        ConnectionDB connectionDB = ConnectionDB.getInstance();
+        Connection connection = connectionDB.getConnection();
+        DistancesAndGeocodings distancesAndGeocodings = new DistancesAndGeocodings();
+
+        if (connection != null){
+            Statement statement = connection.createStatement();
+
+            Queue<Integer> spherical_distances = distancesAndGeocodings.get_spherical_distances(chargingStation, chargingStations);
+            Queue<Integer> road_distances = distancesAndGeocodings.get_road_distance(chargingStation, chargingStations);
+
+            Queue<Integer> spherical_distances_inverse = new LinkedList<>(spherical_distances);
+            Queue<Integer> road_distances_inverse = new LinkedList<>(road_distances);
+
+            if (!chargingStations.isEmpty()) {
+
+                ResultSet resultSet = statement.executeQuery("SELECT id FROM chargingstations WHERE x_coordinate LIKE " + chargingStation.get_x_coordinate() + " AND y_coordinate LIKE " + chargingStation.get_y_coordinate());
+                resultSet.next();
+                Integer new_station_id = resultSet.getInt(1);
+
+                String sql = "INSERT INTO DISTANCES(id_from, id_to, spherical_distance, road_distance) VALUES ";
+
+                if (chargingStations.size() > 1)
+                    for (int i = 0; i < chargingStations.size() - 1; i++)
+                        sql += "(" + new_station_id + "," + chargingStations.get(i).get_id() + "," + spherical_distances.remove() + "," + road_distances.remove() + "),";
+
+                sql += "(" + new_station_id + "," + chargingStations.get(chargingStations.size() - 1).get_id() + "," + spherical_distances.remove() + "," + road_distances.remove() + ")";
+                statement.executeUpdate(sql);
+
+
+                sql = "INSERT INTO DISTANCES(id_to, id_from, spherical_distance, road_distance) VALUES ";
+                if (chargingStations.size() > 1)
+                    for (int i = 0; i < chargingStations.size() - 1; i++)
+                        sql += "(" + new_station_id + "," + chargingStations.get(i).get_id() + "," + spherical_distances_inverse.remove() + "," + road_distances_inverse.remove() + "),";
+                sql += "(" + new_station_id + "," + chargingStations.get(chargingStations.size() - 1).get_id() + "," + spherical_distances_inverse.remove() + "," + road_distances_inverse.remove() + ")";
+                statement.executeUpdate(sql);
+
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -289,12 +301,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ChargingStation chargingStation = new ChargingStation();
                 chargingStation.deserialize_set(data.getStringExtra("charghingstation"));
                 add_charghing_station_to_db(chargingStation);
-                Toast.makeText(MapsActivity.this, "Added",Toast.LENGTH_SHORT).show();
                 finish();
                 startActivity(getIntent());
             }
             if (resultCode == RESULT_CANCELED){
-                Toast.makeText(MapsActivity.this, "Nothing was modified", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, "Nothing was added", Toast.LENGTH_SHORT).show();
             }
         }
     }

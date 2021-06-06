@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,7 +28,69 @@ public class DistancesAndGeocodings {
         api_key = "AIzaSyAKJryOqQbrSookyJ2viovZ79bne-EtL4I";
     }
 
-    public Double get_spherical_distance(LatLng from, LatLng to) {
+
+    public Queue<Integer> get_spherical_distances(ChargingStation chargingStation_from, ArrayList<ChargingStation> chargingStations_to){
+        LatLng coordinates_from = chargingStation_from.get_lat_lang();
+
+        Queue <LatLng> coordinates = new LinkedList<LatLng>();
+        for (ChargingStation elem:
+             chargingStations_to) {
+            coordinates.add(elem.get_lat_lang());
+        }
+
+        Queue <Integer> results = new LinkedList<Integer>();
+
+        for (LatLng elem:
+             coordinates) {
+            results.add(get_spherical_distance_internal(coordinates_from, elem).intValue());
+        }
+
+
+        return  results;
+    }
+
+    public Queue<Integer> get_road_distance(ChargingStation chargingStation_from, ArrayList<ChargingStation> chargingStations_to){
+        LatLng coordinates_from = chargingStation_from.get_lat_lang();
+
+        Queue<LatLng> coordinates = new LinkedList<LatLng>();
+
+        for (ChargingStation elem:
+             chargingStations_to) {
+            coordinates.add(elem.get_lat_lang());
+        }
+
+        int counter = 0;
+        Queue<Integer> results = new LinkedList<Integer>();
+        Queue<LatLng> buffer_coordinates = new LinkedList<LatLng>();
+        while (!coordinates.isEmpty()){
+            if (counter < 600){  //POST METHOD FOR GOOGLE MAPS API ACCEPTS MAXIMUM ~8000 CHARACTERS => buffer_size should be 600 or less
+                buffer_coordinates.add(coordinates.remove());
+                counter ++;
+            }
+            else{
+                Queue<Double> aux = get_road_distance_internal(coordinates_from, buffer_coordinates);
+
+                while (!aux.isEmpty()){
+                    results.add(aux.remove().intValue());
+                }
+
+                buffer_coordinates = new LinkedList<>();
+                counter = 0;
+            }
+        }
+        if (counter != 0){
+            Queue<Double> aux = get_road_distance_internal(coordinates_from, buffer_coordinates);
+
+            while (!aux.isEmpty()){
+                results.add(aux.remove().intValue());
+            }
+        }
+
+        return results;
+    }
+
+
+    private Double get_spherical_distance_internal(LatLng from, LatLng to) {
         float[] distance = new float[1];
         Location.distanceBetween(from.latitude, from.longitude, to.latitude, to.longitude, distance);
         Float wraped_distance = distance[0] / 1000;
@@ -35,7 +98,7 @@ public class DistancesAndGeocodings {
     }
 
 
-    public Queue<Double> get_road_distance(LatLng from, Queue<LatLng>to){
+    private Queue<Double> get_road_distance_internal(LatLng from, Queue<LatLng>to){
 
         Double from_latitude = from.latitude;
         Double from_longitude = from.longitude;

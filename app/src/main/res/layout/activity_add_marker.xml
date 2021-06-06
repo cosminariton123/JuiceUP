@@ -78,8 +78,8 @@
 
     <EditText
         android:id="@+id/editText_nr_of_parking_spots"
-        android:layout_width="182dp"
-        android:layout_height="35dp"
+        android:layout_width="180dp"
+        android:layout_height="44dp"
         android:ems="10"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -87,7 +87,7 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.475" />
+        app:layout_constraintVertical_bias="0.484" />
 
     <TextView
         android:id="@+id/textView_what_plugs_are_available"
