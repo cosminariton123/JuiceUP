@@ -1,5 +1,7 @@
 package com.example.juiceup;
 
+import android.content.Context;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.StrictMode;
 import android.util.JsonReader;
@@ -12,12 +14,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Queue;
 
 public class DistancesAndGeocodings {
@@ -26,6 +30,37 @@ public class DistancesAndGeocodings {
 
     public DistancesAndGeocodings(){
         api_key = "AIzaSyAKJryOqQbrSookyJ2viovZ79bne-EtL4I";
+    }
+
+
+    public LatLng geocode(String location_name){
+
+        String url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location_name +"&key=AIzaSyAKJryOqQbrSookyJ2viovZ79bne-EtL4I";
+        LatLng location_of_named_place = null;
+        JsonReader jsonReader;
+
+        try{
+            URL url = new URL(url_string);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            InputStream inputStream = connection.getInputStream();
+            jsonReader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
+
+            jsonReader.setLenient(true);
+
+            JsonParser jsonParser = new JsonParser();
+            location_of_named_place = jsonParser.parse_json_geocode(jsonReader);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return location_of_named_place;
     }
 
 

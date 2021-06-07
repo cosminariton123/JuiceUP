@@ -64,11 +64,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
 
     private Button add_marker_to_database_button;
-    private Button GO_button;
+    private Button go_button;
 
+    private EditText editText_where_is_the_starting_place;
     private EditText editText_where_do_you_want_to_go;
 
     private Marker last_marker;
+
+    private LatLng user_location;
 
 
     //Queue with all the charghing stations
@@ -113,7 +116,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);   //set marker position
-                markerOptions.draggable(true);
                 markerOptions.title("Location of your charghing station");
 
 
@@ -126,7 +128,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         add_marker_to_database_button = findViewById(R.id.add_marker_to_database_button);
-        GO_button = findViewById(R.id.GO_button);
+        editText_where_is_the_starting_place = findViewById(R.id.editText_where_is_the_starting_place);
+        go_button = findViewById(R.id.GO_button);
         editText_where_do_you_want_to_go = findViewById(R.id.editText_where_do_you_want_to_go);
 
 
@@ -138,12 +141,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 chargingStations) {
             chargingStations_markers.add(mMap.addMarker(new MarkerOptions().position(elem.get_lat_lang()).title(elem.get_name())));
         }
-
-
-
-        //Curent user location won't be requested by gps, it will be hardcoded
-        //Emulator always shows current location in USA,at Google
-        LatLng curent_user_location = new LatLng(44.4268, 26.1025);
 
 
 
@@ -169,7 +166,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        go_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LatLng from = null;
+                LatLng to = null;
 
+                if (editText_where_do_you_want_to_go.getText().toString().equals("") && last_marker == null)
+                    Toast.makeText(MapsActivity.this, "Enter a destination or set a marker",Toast.LENGTH_SHORT).show();
+
+                else {
+
+
+                    if (editText_where_is_the_starting_place.getText().toString().equals(""))
+                        if (get_user_location())    //Try to get user location
+                            from = new LatLng(user_location.latitude, user_location.longitude);
+                        else
+                            from = null;
+                    else {
+                        DistancesAndGeocodings distancesAndGeocodings = new DistancesAndGeocodings();
+                        from = distancesAndGeocodings.geocode(editText_where_is_the_starting_place.getText().toString());
+                    }
+
+                    if (!editText_where_do_you_want_to_go.getText().toString().equals("")) {
+                        DistancesAndGeocodings distancesAndGeocodings = new DistancesAndGeocodings();
+                        to = distancesAndGeocodings.geocode(editText_where_do_you_want_to_go.getText().toString());
+                    } else
+                        to = last_marker.getPosition();
+
+                    if (to == null || from == null) {
+                        if (to == null && from == null)
+                            Toast.makeText(MapsActivity.this, "We couldn't find either address", Toast.LENGTH_SHORT).show();
+                        else {
+                            if (to == null)
+                                Toast.makeText(MapsActivity.this, "We coudn't find destination address", Toast.LENGTH_SHORT).show();
+
+                            if (from == null)
+                                Toast.makeText(MapsActivity.this, "We coudn't find origin address", Toast.LENGTH_SHORT).show();
+                        }
+                    } else { //Everything should be valid. Existance of a route between the places is still uncertain
+                        Toast.makeText(MapsActivity.this, "ALL GOOD", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+
+
+    }
+
+    //Curent user location won't be requested to gps, it will be hardcoded
+    //Emulator always shows current location in USA,at Google
+    //I will choose Bucharest as "current location"
+    private Boolean get_user_location (){
+        user_location = new LatLng(44.4268, 26.1025);
+        return true;
     }
 
 

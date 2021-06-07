@@ -35,29 +35,29 @@
             android:weightSum="2">
 
             <EditText
-                android:id="@+id/editText_where_do_you_want_to_go"
+                android:id="@+id/editText_where_is_the_starting_place"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:background="#80359c5e"
                 android:ems="10"
-                android:hint="Where do you want to go?"
 
-                android:layout_margin="2dp"
+                android:hint="Enter a start location (optional)"
 
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/editText_where_do_you_want_to_go"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:background="#80359c5e"
-
                 android:layout_margin="2dp"
-                android:text="Name" />
+                android:layout_weight="1"
+                android:background="#80359c5e"
+                android:ems="10"
+
+                android:hint="Destination name (or set a marker)"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
