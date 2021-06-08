@@ -110,6 +110,10 @@ public class JsonParser {
             longitude = jsonReader.nextDouble();
         jsonReader.endObject();
 
+
+        latitude = ((double) ((int)(latitude*10000))) / 10000;  //wee need only the first 4 decimals
+        longitude = ((double) ((int)(longitude*10000))) / 10000;
+
         result = new LatLng(latitude, longitude);
 
         return result;
