@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="138dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <EditText
                 android:id="@+id/editText_where_is_the_starting_place"
@@ -58,6 +58,14 @@
 
                 android:hint="Destination name (or set a marker)"
                 android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,43 +73,40 @@
             android:layout_height="match_parent"
             android:layout_weight="7"
             android:orientation="vertical"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <Button
                 android:id="@+id/add_marker_to_database_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:background="#359c5e"
                 android:text="Add marker to database"
-                android:layout_margin="2dp"
                 android:textColor="#ffffff" />
 
             <Button
                 android:id="@+id/GO_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#359c5e"
-                android:autoSizeTextType="none"
                 android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:background="#359c5e"
+                android:textColor="#ffffff"
                 android:text="GO" />
+
+            <Button
+                android:id="@+id/reset_map_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:background="#359c5e"
+                android:textColor="#ffffff"
+                android:text="Reset Map" />
         </LinearLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/reset_map_button"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="280dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="533dp"
-        android:background="#359c5e"
-        android:text="Reset Map" />
 
 
 </RelativeLayout>

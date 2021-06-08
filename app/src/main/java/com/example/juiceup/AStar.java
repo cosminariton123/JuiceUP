@@ -10,7 +10,9 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Stack;
 
+//Followed this guide https://stackabuse.com/graphs-in-java-a-star-algorithm and adjusted for my situation
 public class AStar  {
 
     private MyNode starting_point;
@@ -86,6 +88,14 @@ public class AStar  {
 
             result.add(node.get_id());
         }
+
+        Stack<Integer> aux_for_reverse = new Stack<Integer>();
+
+        while (!result.isEmpty())
+            aux_for_reverse.push(result.remove());
+
+        while (!aux_for_reverse.isEmpty())
+            result.add(aux_for_reverse.pop());
 
         return result;
     }

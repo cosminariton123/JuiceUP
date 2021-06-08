@@ -10,76 +10,177 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        android:weightSum="7"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.466">
+        android:weightSum="2">
 
-        <TextView
-            android:id="@+id/textView_name_info"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:autoSizeTextType="none"
-            android:gravity="center"
-            android:textSize="20sp" />
+            android:orientation="vertical"
+            android:weightSum="7">
 
-        <TextView
-            android:id="@+id/textView_is_guarded_info"
+            <TextView
+                android:id="@+id/textView_name_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_is_guarded_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_parking_spots_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_type2_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_wall_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_supercharger_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_output_kwh_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:autoSizeTextType="none"
             android:gravity="center"
-            android:textSize="20sp" />
+            android:orientation="vertical"
+            android:weightSum="5">
 
-        <TextView
-            android:id="@+id/textView_parking_spots_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:autoSizeTextType="none"
-            android:gravity="center"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/textView_does_the_station_exist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:gravity="center"
+                android:text="Does the station exist?"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/textView_type2_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:autoSizeTextType="none"
-            android:gravity="center"
-            android:textSize="20sp" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView_wall_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:autoSizeTextType="none"
-            android:gravity="center"
-            android:textSize="20sp" />
+                <RadioButton
+                    android:id="@+id/yes_exist_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes" />
 
-        <TextView
-            android:id="@+id/textView_supercharger_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:autoSizeTextType="none"
-            android:gravity="center"
-            android:textSize="20sp" />
+                <RadioButton
+                    android:id="@+id/no_exist_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No" />
+            </RadioGroup>
 
-        <TextView
-            android:id="@+id/textView_output_kwh_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:autoSizeTextType="none"
-            android:gravity="center"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/textView_rate_this_station"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Rate this station"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/one_star_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/btn_star_big_on" />
+
+                <ImageButton
+                    android:id="@+id/two_star_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/btn_star_big_on" />
+
+                <ImageButton
+                    android:id="@+id/three_star_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/btn_star_big_on" />
+
+                <ImageButton
+                    android:id="@+id/four_star_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/btn_star_big_on" />
+
+                <ImageButton
+                    android:id="@+id/five_star_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/btn_star_big_on" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:width="150dp"
+                android:text="Submit" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

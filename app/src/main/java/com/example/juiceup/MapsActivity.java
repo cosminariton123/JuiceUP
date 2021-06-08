@@ -40,10 +40,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.juiceup.databinding.ActivityMapsBinding;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.EncodedPolyline;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.security.Permission;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -134,7 +145,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         go_button = findViewById(R.id.GO_button);
         editText_where_do_you_want_to_go = findViewById(R.id.editText_where_do_you_want_to_go);
         reset_map_button = findViewById(R.id.reset_map_button);
-        reset_map_button.setVisibility(View.GONE);
+        reset_map_button.setVisibility(View.INVISIBLE);
 
 
         //Get_all_charghing_stations_from_the_db
@@ -230,7 +241,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                         end.set_id(0);
 
                         get_distances_from_db(distances);
-                        Toast.makeText(MapsActivity.this, "ALL GOOD", Toast.LENGTH_SHORT).show();
                         AStar aStar = new AStar();
                         Queue<Integer> ids = aStar.calculate_route(start, end ,chargingStations, distances);
 
@@ -270,6 +280,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     private void draw_route(ChargingStation start, ChargingStation end, Queue<Integer> ids){
         chargingStations_markers = new ArrayList<>();
+        mMap.clear();
+        ArrayList<LatLng> locations_for_line_draw = new ArrayList<LatLng>();
+        locations_for_line_draw.add(start.get_lat_lang());
 
         while (!ids.isEmpty()){
             Integer next_id = ids.remove();
@@ -291,13 +304,102 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                     if (station.get_wall() == 1)
                         snipp += "Wall";
                     chargingStations_markers.add(mMap.addMarker(new MarkerOptions().title(station.get_name()).position(station.get_lat_lang()).snippet(snipp)));
+                    locations_for_line_draw.add(station.get_lat_lang());
                 }
             }
         }
+        //Zoom on a the point on the middle of the route
+        LatLng point_to_zoom_on = locations_for_line_draw.get(locations_for_line_draw.size()/2);
+
+        locations_for_line_draw.add(end.get_lat_lang());
+        draw_line(locations_for_line_draw);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point_to_zoom_on,5));
 
         reset_map_button.setVisibility(View.VISIBLE);
+        go_button.setAlpha((float)0.5);
+        go_button.setEnabled(false);
 
     }
+
+    public void draw_line(ArrayList<LatLng> locations_for_line_draw){
+
+        LatLng start = locations_for_line_draw.remove(0);
+        LatLng end = start;
+        while (!locations_for_line_draw.isEmpty()){
+            start = end;
+            end = locations_for_line_draw.remove(0);
+            draw_line_internal(start, end);
+        }
+    }
+
+    //Wonderfull guide that I follwed here https://stackoverflow.com/questions/47492459/how-do-i-draw-a-route-along-an-existing-road-between-two-points
+    public void draw_line_internal(LatLng start, LatLng end){
+        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyAKJryOqQbrSookyJ2viovZ79bne-EtL4I").build();
+
+        List<LatLng> path = new ArrayList<>();
+
+        String string_start = start.latitude + "," + start.longitude;
+        String string_end = end.latitude + "," + end.longitude;
+
+        DirectionsApiRequest request = DirectionsApi.getDirections(context,string_start, string_end);
+
+        try{
+            DirectionsResult result = request.await();
+
+            if (result.routes != null && result.routes.length > 0){
+                DirectionsRoute route = result.routes[0];
+
+                if (route.legs != null){
+                    for (int i = 0; i < route.legs.length; i++){
+                        DirectionsLeg leg = route.legs[i];
+                        if (leg.steps != null){
+                            for (int j = 0 ; j < leg.steps.length; j++){
+                                DirectionsStep step = leg.steps[j];
+                                if (step.steps != null && step.steps.length > 0){
+                                    for (int k = 0; k < step.steps.length; k++){
+                                        DirectionsStep step1 = step.steps[k];
+                                        EncodedPolyline points1 = step1.polyline;
+                                        if (points1 != null){
+                                            List<com.google.maps.model.LatLng> coords1 = points1.decodePath();
+                                            for (com.google.maps.model.LatLng coord1:
+                                                 coords1) {
+                                                path.add(new LatLng(coord1.lat, coord1.lng));
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    EncodedPolyline points = step.polyline;
+                                    if (points != null){
+                                        List<com.google.maps.model.LatLng> coords = points.decodePath();
+                                        for (com.google.maps.model.LatLng coord:
+                                             coords) {
+                                            path.add(new LatLng(coord.lat, coord.lng));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Toast.makeText(MapsActivity.this, "Intrerupted, couldn't draw the line", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(MapsActivity.this, "IOException, couldn't draw the line", Toast.LENGTH_SHORT).show();
+        } catch (ApiException e) {
+            e.printStackTrace();
+            Toast.makeText(MapsActivity.this, "Api error, couldn't draw the line", Toast.LENGTH_SHORT).show();
+        }
+
+        if (path.size() > 0){
+            PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.MAGENTA).width(10);
+            mMap.addPolyline(opts);
+        }
+
+    }
+
 
 
     public void get_distances_from_db(ArrayList<Distance> distances){
@@ -382,8 +484,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 Statement statement = connection.createStatement();
 
 
-                ResultSet resultSet = statement.executeQuery("SELECT id FROM chargingstations WHERE x_coordinate like " + chargingStation.get_x_coordinate() + " AND y_coordinate LIKE " +
-                        chargingStation.get_x_coordinate());
+                ResultSet resultSet = statement.executeQuery("SELECT id FROM chargingstations WHERE x_coordinate like " + String.format("%.4f", chargingStation.get_x_coordinate()) + " AND y_coordinate LIKE " +
+                        String.format("%.4f", chargingStation.get_x_coordinate()));
 
                 if (resultSet.next()){
                     Toast.makeText(MapsActivity.this, "There aleready exists a charghing station at this coordinates", Toast.LENGTH_SHORT).show();
@@ -420,7 +522,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
             if (!chargingStations.isEmpty()) {
 
-                ResultSet resultSet = statement.executeQuery("SELECT id FROM chargingstations WHERE x_coordinate LIKE " + chargingStation.get_x_coordinate() + " AND y_coordinate LIKE " + chargingStation.get_y_coordinate());
+                ResultSet resultSet = statement.executeQuery("SELECT id FROM chargingstations WHERE x_coordinate LIKE " + String.format("%.4f", chargingStation.get_x_coordinate()) + " AND y_coordinate LIKE " +  String.format("%.4f", chargingStation.get_y_coordinate()));
 
                 resultSet.next();
 

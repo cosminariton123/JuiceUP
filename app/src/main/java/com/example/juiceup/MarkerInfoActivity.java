@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,13 @@ public class MarkerInfoActivity extends AppCompatActivity {
     private TextView textView_wall_info;
     private TextView textView_supercharger_info;
     private TextView textView_output_kwh_info;
+    private RadioButton yes_exist;
+    private ImageButton one_star;
+    private ImageButton two_star;
+    private ImageButton three_star;
+    private ImageButton four_star;
+    private ImageButton five_star;
+    private Button submit_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,14 @@ public class MarkerInfoActivity extends AppCompatActivity {
         textView_wall_info = findViewById(R.id.textView_wall_info);
         textView_supercharger_info = findViewById(R.id.textView_supercharger_info);
         textView_output_kwh_info = findViewById(R.id.textView_output_kwh_info);
+
+        yes_exist = findViewById(R.id.yes_exist_radio_button);
+        one_star = findViewById(R.id.one_star_button);
+        two_star = findViewById(R.id.two_star_button);
+        three_star = findViewById(R.id.three_star_button);
+        four_star = findViewById(R.id.four_star_button);
+        five_star = findViewById(R.id.five_star_button);
+        submit_button = findViewById(R.id.submit_button);
 
 
         ChargingStation chargingStation = get_charghingstation_from_db(marker_id);
