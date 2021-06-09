@@ -5,6 +5,10 @@ import android.widget.ArrayAdapter;
 
 import org.w3c.dom.Node;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -212,7 +216,49 @@ public class AStar  {
                 chargingStations.remove(i);
                 i--;
             }
+            else if (chargingStations.get(i).get_rating() < currentUser.get_min_rating_preference()){
+                chargingStations.remove(i);
+                i--;
+            }
+            else{
+                Integer trust_score = get_the_users_who_placed_the_station_score(chargingStations.get(i));
+                if (trust_score < currentUser.get_min_trust_preference()){
+                    chargingStations.remove(i);
+                    i--;
+                }
+            }
         }
+    }
+
+    private Integer get_the_users_who_placed_the_station_score(ChargingStation chargingStation){
+        ConnectionDB connectionDB = ConnectionDB.getInstance();
+        Connection connection = connectionDB.getConnection();
+
+        if (connection != null){
+
+            Statement statement = null;
+            try {
+                statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT trust_score FROM users WHERE email LIKE '" + chargingStation.get_set_by_user() + "'");
+            resultSet.next();
+
+            Double trust_score = resultSet.getDouble(1);
+
+            if (trust_score < 33)
+                return  1;
+
+            if (trust_score > 66)
+                return 3;
+
+            return 2;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                return 1; //If an anomaly happend, we don't have trust
+            }
+        }
+        else
+            return 1; //We don't have trust if we can't check it
     }
 
 }

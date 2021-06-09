@@ -64,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     CurrentUser currentUser = CurrentUser.getInstance();
                     currentUser.set_details(email, password, salt, first_name, last_name, 0, 0, 0, 0, 0
-                            , 0, 0, trust);
+                            , 0, 0, 1, 1, trust);
 
                     ConnectionDB database = ConnectionDB.getInstance();
                     Connection connection = database.getConnection();
@@ -83,10 +83,10 @@ public class SignUpActivity extends AppCompatActivity {
                                     currentUser.logout();
                                 } else {
 
-                                    statement.executeUpdate("INSERT INTO users(email, password, salt, last_name, first_name, car_max_km_range, guarded_place_preference, nr_of_parking_spots_preference, type2_preference, wall_preference, supercharger_preference, min_kwh_preference, trust_score, how_many_people_voted) VALUES(" +
+                                    statement.executeUpdate("INSERT INTO users(email, password, salt, last_name, first_name, car_max_km_range, guarded_place_preference, nr_of_parking_spots_preference, type2_preference, wall_preference, supercharger_preference, min_kwh_preference, min_rating_preference, min_trust_preference ,trust_score, how_many_people_voted) VALUES(" +
                                             "'" + currentUser.get_email() + "','" + currentUser.get_password() + "','" + currentUser.get_salt() +
                                             "','" + currentUser.get_last_name() + "','" + currentUser.get_first_name() + "'," + currentUser.get_car_max_km_range() + "," + currentUser.get_guarded_preference() + "," + currentUser.get_of_parking_spots_preference() + "," + currentUser.get_type2_preference() + "," + currentUser.get_wall_preference() + "," + currentUser.get_supercharger_preference() + "," + currentUser.get_min_kwh_preference() + "," +
-                                            currentUser.get_trust_score() + "," + 1 + ")");
+                                            currentUser.get_min_rating_preference() + "," + currentUser.get_min_trust_preference() + "," +currentUser.get_trust_score() + "," + 1 + ")");
 
                                     Toast.makeText(SignUpActivity.this, "Sign up succesfull", Toast.LENGTH_SHORT).show();
 

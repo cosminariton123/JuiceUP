@@ -196,6 +196,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 LatLng from = null;
                 LatLng to = null;
 
+                CurrentUser currentUser = CurrentUser.getInstance();
+
+                if (!currentUser.get_is_logged())
+                    Toast.makeText(MapsActivity.this, "You have to be logged in to use this service", Toast.LENGTH_SHORT).show();
+
+                else
                 if (editText_where_do_you_want_to_go.getText().toString().equals("") && last_marker == null)
                     Toast.makeText(MapsActivity.this, "Enter a destination or set a marker",Toast.LENGTH_SHORT).show();
 
