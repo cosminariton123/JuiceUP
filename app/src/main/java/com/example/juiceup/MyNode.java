@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+//inspired from  https://stackabuse.com/graphs-in-java-a-star-algorithm
+//See AStar.java for more information
 public class MyNode implements Comparable<MyNode> {
 
     private Integer id;

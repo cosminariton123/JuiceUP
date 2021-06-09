@@ -17,6 +17,9 @@ import java.util.Queue;
 import java.util.Stack;
 
 //Followed this guide https://stackabuse.com/graphs-in-java-a-star-algorithm and adjusted for my situation
+//Altough it is a well known algorithm, pretty easy to implement, I chose to search for the an implementation
+//online so I don't have to reinvent the wheel or try to port my own original implementation from Python3 language
+//Also MyNode, MyEdge are inspired from the link above
 public class AStar  {
 
     private MyNode starting_point;

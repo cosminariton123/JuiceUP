@@ -1,5 +1,7 @@
 package com.example.juiceup;
 
+//inspired from https://stackabuse.com/graphs-in-java-a-star-algorithm
+//See AStar.java for more information
 public class MyEdge {
 
     private Integer weight;

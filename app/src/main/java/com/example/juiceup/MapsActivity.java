@@ -338,7 +338,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         }
     }
 
-    //Wonderfull guide that I follwed here https://stackoverflow.com/questions/47492459/how-do-i-draw-a-route-along-an-existing-road-between-two-points
+    //Wonderfull guide that I follwed: https://stackoverflow.com/questions/47492459/how-do-i-draw-a-route-along-an-existing-road-between-two-points
+    //Most of the code below(this methode) is taken from the "best answer" in the forum in the above link
+    //I can also note that documentation is pretty sparse when it comes to DirectionsApiRequest class and the Json Google sends over an HTTP POST for this
+    //API is almost unreadable, unlike DistanceMatrixAPI and GeocodingAPI
     public void draw_line_internal(LatLng start, LatLng end){
         GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyAKJryOqQbrSookyJ2viovZ79bne-EtL4I").build();
 
