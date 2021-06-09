@@ -17,6 +17,7 @@ import java.sql.Statement;
 public class AccountPreferencesActivity extends AppCompatActivity {
 
     RadioButton yes_preference_radio_button;
+    RadioButton no_preference_radio_button;
     EditText editText_nr_of_parking_spots_preference;
     Switch switch_Type_preference;
     Switch switch_wall_preference;
@@ -39,6 +40,7 @@ public class AccountPreferencesActivity extends AppCompatActivity {
         editText_output_kWh_preference = findViewById(R.id.editText_output_kWh_preference);
         editText_maximum_range = findViewById(R.id.editText_maximum_range);
         set_button = findViewById(R.id.set_button);
+        no_preference_radio_button = findViewById(R.id.no_preference_radio_button);
 
 
 
@@ -54,7 +56,7 @@ public class AccountPreferencesActivity extends AppCompatActivity {
                 Integer kwh = 0;
                 Integer max_range = 0;
 
-                if (editText_nr_of_parking_spots_preference.getText().toString().equals("") || editText_maximum_range.getText().toString().equals("") || editText_output_kWh_preference.getText().toString().equals(""))
+                if (editText_nr_of_parking_spots_preference.getText().toString().equals("") || editText_maximum_range.getText().toString().equals("") || editText_output_kWh_preference.getText().toString().equals("") || (!no_preference_radio_button.isChecked() && !yes_preference_radio_button.isChecked()))
                     Toast.makeText(AccountPreferencesActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 else if (Integer.parseInt(editText_nr_of_parking_spots_preference.getText().toString()) < 0 || Integer.parseInt(editText_maximum_range.getText().toString()) < 0 || Integer.parseInt(editText_output_kWh_preference.getText().toString()) < 0)
                     Toast.makeText(AccountPreferencesActivity.this, "Negative values aren't allowed", Toast.LENGTH_SHORT).show();

@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 String last_name = resultSet.getString(1);
                                 String first_name = resultSet.getString(2);
-                                Integer trust_score = resultSet.getInt(3);
+                                Double trust_score = resultSet.getDouble(3);
                                 Integer car_max_km_range = resultSet.getInt(4);
                                 Integer guarded_place_preference = resultSet.getInt(5);
                                 Integer nr_of_parking_spots_preference = resultSet.getInt(6);

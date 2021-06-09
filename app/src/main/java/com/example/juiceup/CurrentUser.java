@@ -8,7 +8,7 @@ public class CurrentUser {
     private String last_name;
     private String password;
     private String salt;
-    private Integer trust_score;
+    private Double trust_score;
     private Integer car_max_km_range;
     private Integer guarded_place_preference;
     private Integer nr_of_parking_spots_preference;
@@ -20,11 +20,11 @@ public class CurrentUser {
     private static CurrentUser instance = new CurrentUser();
 
     private CurrentUser(){
-        internal_set_detailes("", "", "", "", "", 0, 0, 0, 0, 0, 0, 0,0 ,false);
+        internal_set_detailes("", "", "", "", "", 0, 0, 0, 0, 0, 0, 0,0. ,false);
     }
 
     private void internal_set_detailes(String mail, String pass, String input_salt, String f_name, String l_name, Integer max_km, Integer guarded_place_preferenc, Integer nr_of_parking_spots_preferenc,
-            Integer type2_preferenc, Integer wall_preferenc, Integer supercharger_preferenc, Integer min_kwh_preferenc, Integer trust, Boolean logged){
+            Integer type2_preferenc, Integer wall_preferenc, Integer supercharger_preferenc, Integer min_kwh_preferenc, Double trust, Boolean logged){
         is_logged = logged;
         email = mail;
         first_name = f_name;
@@ -47,13 +47,13 @@ public class CurrentUser {
     }
 
     public void set_details(String mail, String pass, String salt, String f_name, String l_name, Integer max_km, Integer guarded_place_preference,
-            Integer nr_of_parking_spots_preference, Integer type2_preference, Integer wall_preference, Integer supercharger_preference, Integer min_kwh_preference, Integer trust){
+            Integer nr_of_parking_spots_preference, Integer type2_preference, Integer wall_preference, Integer supercharger_preference, Integer min_kwh_preference, Double trust){
         internal_set_detailes(mail, pass, salt,f_name, l_name, max_km, guarded_place_preference, nr_of_parking_spots_preference, type2_preference, wall_preference, supercharger_preference, min_kwh_preference, trust, true);
     }
 
     public void logout(){
         internal_set_detailes("", "", "", "", "", 0, 0, 0, 0
-                , 0, 0, 0,0, false);
+                , 0, 0, 0,0., false);
     }
 
     public Boolean get_is_logged(){
@@ -80,7 +80,7 @@ public class CurrentUser {
         return password;
     }
 
-    public Integer get_trust_score(){
+    public Double get_trust_score(){
         return trust_score;
     }
 

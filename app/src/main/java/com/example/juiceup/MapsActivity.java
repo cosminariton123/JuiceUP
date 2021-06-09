@@ -442,7 +442,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
             try {
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT id, name, set_by_user, x_coordinate, y_coordinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh FROM chargingstations");
+                ResultSet resultSet = statement.executeQuery("SELECT id, name, set_by_user, x_coordinate, y_coordinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh, rating, how_many_people_rated FROM chargingstations");
 
                 while (resultSet.next()) {
                     Integer id = resultSet.getInt(1);
@@ -456,9 +456,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                     Integer wall = resultSet.getInt(9);
                     Integer supercharger = resultSet.getInt(10);
                     Integer outputkwh = resultSet.getInt(11);
+                    Double rating = resultSet.getDouble(12);
+                    Integer how_many_people_rated = resultSet.getInt(13);
 
                     ChargingStation aux = new ChargingStation();
-                    aux.set_values(id, name, set_by_user, x_coordinate, y_coodinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh);
+                    aux.set_values(id, name, set_by_user, x_coordinate, y_coodinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh, rating, how_many_people_rated);
                     chargingStations.add(aux);
                 }
 
@@ -491,10 +493,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                     Toast.makeText(MapsActivity.this, "There aleready exists a charghing station at this coordinates", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    statement.executeUpdate("INSERT INTO chargingstations(name, set_by_user  ,x_coordinate, y_coordinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh) VALUES('" +
+                    statement.executeUpdate("INSERT INTO chargingstations(name, set_by_user  ,x_coordinate, y_coordinate, guarded, parking_number_of_places, type2, wall, supercharger, outputkwh, rating, how_many_people_rated) VALUES('" +
                             chargingStation.get_name() + "','" + currentUser.get_email() + "'," + chargingStation.get_x_coordinate() + "," +
                             chargingStation.get_y_coordinate() + "," + chargingStation.get_guarded() + "," + chargingStation.get_parking_number_of_places() + "," +
-                            chargingStation.get_type2() + "," + chargingStation.get_wall() + "," + chargingStation.get_supercharger() + "," + chargingStation.get_outputkwh() + ")");
+                            chargingStation.get_type2() + "," + chargingStation.get_wall() + "," + chargingStation.get_supercharger() + "," + chargingStation.get_outputkwh() + "," + chargingStation.get_rating() + "," + chargingStation.get_how_many_people_rated() +")");
                     set_station_connections_in_db(chargingStation);
                     Toast.makeText(MapsActivity.this, "Added",Toast.LENGTH_SHORT).show();
                 }
