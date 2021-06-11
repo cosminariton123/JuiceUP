@@ -36,6 +36,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -151,6 +152,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         //Get_all_charghing_stations_from_the_db
         get_charghing_stations_from_db(chargingStations);
 
+        //Zoom on users location
+        get_user_location();
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(user_location, 10));
+        mMap.addMarker(new MarkerOptions().position(user_location).title("You are here!").icon(BitmapDescriptorFactory.defaultMarker(180)));
 
         for (ChargingStation elem :
                 chargingStations) {

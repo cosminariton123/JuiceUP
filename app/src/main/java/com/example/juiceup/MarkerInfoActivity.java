@@ -106,7 +106,7 @@ public class MarkerInfoActivity extends AppCompatActivity {
         if (chargingStation.get_guarded() == 1)
             textView_is_guarded_info.setText("Guarded: " + "Yes");
         else
-            textView_is_guarded_info.setText("Guarded" +"No");
+            textView_is_guarded_info.setText("Guarded" +" No");
 
         textView_parking_spots_info.setText("Number of parking spots: " + chargingStation.get_parking_number_of_places().toString());
 
