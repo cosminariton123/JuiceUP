@@ -29,7 +29,7 @@ public class DistancesAndGeocodings {
     private String api_key;
 
     public DistancesAndGeocodings(){
-        api_key = "AIzaSyAKJryOqQbrSookyJ2viovZ79bne-EtL4I";
+        api_key = "AlphaDMAznfXXt21Mo181dTBMfpyQtVNQfdQxkTH";
     }
 
 
@@ -139,7 +139,7 @@ public class DistancesAndGeocodings {
         Double from_longitude = from.longitude;
         String url_string = "";
 
-        url_string += "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=" + from_latitude.toString() + "," + from_longitude.toString() + "&destinations=";
+        url_string += "https://maps.distancematrixapi.com/maps/api/distancematrix/json?units=metric&origins=" + from_latitude.toString() + "," + from_longitude.toString() + "&destinations=";
 
         while (!to.isEmpty()){
             LatLng aux_to = to.remove();
@@ -169,7 +169,7 @@ public class DistancesAndGeocodings {
 
             URL url = new URL(url_string);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod("GET");
             InputStream inputStream = connection.getInputStream();
             jsonReader = new JsonReader(new InputStreamReader(inputStream, "UTF-8"));
 
