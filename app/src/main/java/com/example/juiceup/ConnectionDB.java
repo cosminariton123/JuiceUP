@@ -31,7 +31,6 @@ public class ConnectionDB {
         username = "client";
         password = "123";
         connectionString = "jdbc:jtds:sqlserver://" +ip  + ":" + port + "/" + database;
-
         connection = null;
 
 

@@ -67,12 +67,12 @@ public class LoginActivity extends AppCompatActivity {
                                 enter_credentials_textview.setText("Authentification succesful!");
 
                                 //Taking the rest of the information from the server
-                                resultSet = statement.executeQuery("SELECT last_name, first_name, trust_score, car_max_km_range, guarded_place_preference, nr_of_parking_spots_preference, type2_preference, wall_preference, supercharger_preference, min_kwh_preference FROM users WHERE email LIKE '" + email_address + "'");
+                                resultSet = statement.executeQuery("SELECT last_name, first_name, trust_score, car_max_km_range, guarded_place_preference, nr_of_parking_spots_preference, type2_preference, wall_preference, supercharger_preference, min_kwh_preference, min_rating_preference, min_trust_preference FROM users WHERE email LIKE '" + email_address + "'");
                                 resultSet.next();
 
                                 String last_name = resultSet.getString(1);
                                 String first_name = resultSet.getString(2);
-                                Integer trust_score = resultSet.getInt(3);
+                                Double trust_score = resultSet.getDouble(3);
                                 Integer car_max_km_range = resultSet.getInt(4);
                                 Integer guarded_place_preference = resultSet.getInt(5);
                                 Integer nr_of_parking_spots_preference = resultSet.getInt(6);
@@ -80,10 +80,12 @@ public class LoginActivity extends AppCompatActivity {
                                 Integer wall_preference = resultSet.getInt(8);
                                 Integer supercharger_preference = resultSet.getInt(9);
                                 Integer min_kwh_preference = resultSet.getInt(10);
+                                Integer min_rating_preference = resultSet.getInt(11);
+                                Integer min_trust_preference = resultSet.getInt(12);
 
                                 CurrentUser currentUser = CurrentUser.getInstance();
                                 currentUser.set_details(email_address, password, stored_salt, first_name, last_name, car_max_km_range, guarded_place_preference, nr_of_parking_spots_preference,
-                                        type2_preference, wall_preference, supercharger_preference, min_kwh_preference, trust_score);
+                                        type2_preference, wall_preference, supercharger_preference, min_kwh_preference, min_rating_preference, min_trust_preference , trust_score);
                                 Toast.makeText(LoginActivity.this, "Authentification succesfull", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else

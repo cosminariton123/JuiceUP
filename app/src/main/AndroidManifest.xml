@@ -18,9 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JuiceUP">
-        <activity android:name=".ViewPreferencesActivity"></activity>
-        <activity android:name=".AccountPreferencesActivity" />
-        <activity android:name=".AddMarker" />
+        <activity android:name=".MarkerInfoActivity"></activity>
+        <activity
+            android:name=".ViewPreferencesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AccountPreferencesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddMarker"
+            android:screenOrientation="portrait" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

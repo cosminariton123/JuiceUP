@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="138dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -32,32 +32,40 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical"
-            android:weightSum="2">
+            android:weightSum="3">
+
+            <EditText
+                android:id="@+id/editText_where_is_the_starting_place"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="#80359c5e"
+                android:ems="10"
+
+                android:hint="Enter a start location (optional)"
+
+                android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/editText_where_do_you_want_to_go"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:background="#80359c5e"
                 android:ems="10"
-                android:hint="Where do you want to go?"
 
-                android:layout_margin="2dp"
-
+                android:hint="Destination name (or set a marker)"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName2"
+            <TextView
+                android:id="@+id/editTextTextPersonName"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:background="#80359c5e"
-
-                android:layout_margin="2dp"
-                android:text="Name" />
+                android:visibility="invisible" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,27 +73,38 @@
             android:layout_height="match_parent"
             android:layout_weight="7"
             android:orientation="vertical"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <Button
                 android:id="@+id/add_marker_to_database_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:background="#359c5e"
                 android:text="Add marker to database"
-                android:layout_margin="2dp"
                 android:textColor="#ffffff" />
 
             <Button
                 android:id="@+id/GO_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#359c5e"
-                android:autoSizeTextType="none"
                 android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="none"
+                android:background="#359c5e"
+                android:textColor="#ffffff"
                 android:text="GO" />
+
+            <Button
+                android:id="@+id/reset_map_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:background="#359c5e"
+                android:textColor="#ffffff"
+                android:text="Reset Map" />
         </LinearLayout>
     </LinearLayout>
 

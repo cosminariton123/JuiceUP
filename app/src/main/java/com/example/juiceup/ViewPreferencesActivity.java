@@ -14,6 +14,8 @@ public class ViewPreferencesActivity extends AppCompatActivity {
     private TextView textView_wall_pref;
     private TextView textView_supercharger_pref;
     private TextView textView_min_kwh_pref;
+    private TextView textView_min_rating_pref;
+    private TextView textView_min_trust_score_pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class ViewPreferencesActivity extends AppCompatActivity {
         textView_wall_pref = findViewById(R.id.textView_wall_pref);
         textView_supercharger_pref = findViewById(R.id.textView_supercharger_pref);
         textView_min_kwh_pref = findViewById(R.id.textView_min_kwh_pref);
+        textView_min_rating_pref = findViewById(R.id.textView_min_rating_pref);
+        textView_min_trust_score_pref = findViewById(R.id.textView_min_trust_score_pref);
 
         CurrentUser currentUser = CurrentUser.getInstance();
 
@@ -38,6 +42,16 @@ public class ViewPreferencesActivity extends AppCompatActivity {
         textView_wall_pref.setText("Must have wall:\n" + convert_integer_into_true_false_string(currentUser.get_wall_preference()).toString());
         textView_supercharger_pref.setText("Must have supercharger:\n" + convert_integer_into_true_false_string(currentUser.get_supercharger_preference()).toString());
         textView_min_kwh_pref.setText("Minimum charghing speed:\n" + currentUser.get_min_kwh_preference().toString() + " kwh");
+        textView_min_rating_pref.setText("Minimum rating:\n " + currentUser.get_min_rating_preference() + " stars");
+
+        if (currentUser.get_min_trust_preference() == 1)
+            textView_min_trust_score_pref.setText("Minimum trust:\n" + "Low trusted sources");
+
+        if (currentUser.get_min_trust_preference() == 2)
+            textView_min_trust_score_pref.setText("Minimum trust:\n" + "Medium trusted sources");
+
+        if (currentUser.get_min_trust_preference() == 3 )
+            textView_min_trust_score_pref.setText("Minimum trust\n" + "High trusted sources");
     }
 
     public String convert_integer_into_true_false_string(Integer input){

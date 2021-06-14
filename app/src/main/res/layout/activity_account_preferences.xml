@@ -6,187 +6,243 @@
     android:layout_height="match_parent"
     tools:context=".AccountPreferencesActivity">
 
-    <EditText
-        android:id="@+id/editText_output_kWh_preference"
-        android:layout_width="199dp"
-        android:layout_height="46dp"
-        android:ems="10"
-        android:hint="kW/h"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.649" />
-
-    <TextView
-        android:id="@+id/textView_what_is_the_output_of_the_charghing_station_preference"
-        android:layout_width="184dp"
-        android:layout_height="44dp"
-        android:autoSizeTextType="uniform"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="Minimum output accepted"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.583" />
+        android:orientation="vertical"
+        android:weightSum="15">
 
-    <Switch
-        android:id="@+id/switch_supercharger_preference"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Supercharger"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.942"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.478" />
+        <TextView
+            android:id="@+id/textView_only_guarded"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeTextType="none"
+            android:gravity="center"
+            android:text="Only guarded places"
+            android:textSize="20dp" />
 
-    <Switch
-        android:id="@+id/switch_wall_preference"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wall"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.478" />
+        <RadioGroup
+            android:id="@+id/parking_preference_radio_grup"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-    <Switch
-        android:id="@+id/switch_Type_preference"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Type2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.131"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.478" />
+            <RadioButton
+                android:id="@+id/yes_preference_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_weight="1"
+                android:text="Yes" />
 
-    <TextView
-        android:id="@+id/textView_what_plugs_are_available_preference"
-        android:layout_width="174dp"
-        android:layout_height="49dp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="What plugs do you preffer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+            <RadioButton
+                android:id="@+id/no_preference_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="No" />
+        </RadioGroup>
 
-    <EditText
-        android:id="@+id/editText_nr_of_parking_spots_preference"
-        android:layout_width="180dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.308" />
+        <TextView
+            android:id="@+id/textView_nr_of_parking_spots_preference"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeTextType="none"
+            android:gravity="center"
+            android:text="Minimum number of parking spots"
+            android:textSize="20dp" />
 
-    <RadioGroup
-        android:id="@+id/parking_preference_radio_grup"
-        android:layout_width="214dp"
-        android:layout_height="44dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.135">
+        <EditText
+            android:id="@+id/editText_nr_of_parking_spots_preference"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number" />
 
-        <RadioButton
-            android:id="@+id/yes_preference_radio_button"
-            android:layout_width="119dp"
+        <TextView
+            android:id="@+id/textView_what_plugs_are_available_preference"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeTextType="none"
+            android:gravity="center"
+            android:text="What plugs do you preffer"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Yes" />
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <RadioButton
-            android:id="@+id/no_preference_radio_button"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:text="No" />
-    </RadioGroup>
+            <Switch
+                android:id="@+id/switch_Type_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Type2" />
 
-    <TextView
-        android:id="@+id/textView_only_guarded"
-        android:layout_width="166dp"
-        android:layout_height="47dp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="Only guarded places"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.052" />
+            <Switch
+                android:id="@+id/switch_wall_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Wall" />
 
-    <TextView
-        android:id="@+id/textView_nr_of_parking_spots_preference"
-        android:layout_width="154dp"
-        android:layout_height="46dp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="Minimum number of parking spots"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.232" />
+            <Switch
+                android:id="@+id/switch_supercharger_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Supercharger" />
 
-    <TextView
-        android:id="@+id/textView_max_km_range"
-        android:layout_width="224dp"
-        android:layout_height="41dp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="Maximum distance between stations"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.762" />
+        </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText_maximum_range"
-        android:layout_width="211dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:hint="KM"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.825" />
+        <TextView
+            android:id="@+id/textView_what_is_the_output_of_the_charghing_station_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoSizeTextType="none"
+            android:gravity="center"
+            android:text="Minimum output accepted"
+            android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/set_button"
-        android:layout_width="148dp"
-        android:layout_height="50dp"
-        android:text="SET"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.532"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.916" />
+        <EditText
+            android:id="@+id/editText_output_kWh_preference"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="kW/h"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView_max_km_range"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:autoSizeTextType="none"
+            android:gravity="center"
+            android:text="Maximum distance between stations"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/editText_maximum_range"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="km"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView_min_rating_preference"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Minimum rating"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/one_star_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/btn_star_big_off" />
+
+            <ImageButton
+                android:id="@+id/two_star_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/btn_star_big_off" />
+
+            <ImageButton
+                android:id="@+id/three_star_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/btn_star_big_off" />
+
+            <ImageButton
+                android:id="@+id/four_star_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/btn_star_big_off" />
+
+            <ImageButton
+                android:id="@+id/five_star_preference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/btn_star_big_off" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_minimum_trust_score"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Minimum trust score"
+            android:textSize="20dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:weightSum="3">
+
+            <RadioButton
+                android:id="@+id/low_trust_score_preference_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Low trust score" />
+
+            <RadioButton
+                android:id="@+id/medium_trust_score_preference_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Medium trust score" />
+
+            <RadioButton
+                android:id="@+id/high_trust_preference_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="High trust score" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/set_button"
+            android:layout_width="148dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:text="SET" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

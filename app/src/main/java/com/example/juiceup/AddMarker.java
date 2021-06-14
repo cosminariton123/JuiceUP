@@ -53,7 +53,7 @@ public class AddMarker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (editText_nr_of_parking_spots.getText().toString().equals("") || editText_output_kWh.getText().toString().equals("") || editText_charghing_station_name.getText().toString().equals(""))
+                if (editText_nr_of_parking_spots.getText().toString().equals("") || editText_output_kWh.getText().toString().equals("") || editText_charghing_station_name.getText().toString().equals("") || (!yes_radio_button.isChecked() && !no_radio_button.isChecked()))
                     Toast.makeText(AddMarker.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 else if (Integer.parseInt(editText_nr_of_parking_spots.getText().toString()) < 0 || Integer.parseInt(editText_output_kWh.getText().toString()) < 0)
                     Toast.makeText(AddMarker.this, "Negative values aren't allowed" ,Toast.LENGTH_SHORT).show();
@@ -83,7 +83,7 @@ public class AddMarker extends AppCompatActivity {
                     String name = editText_charghing_station_name.getText().toString();
 
                     ChargingStation chargingStation = new ChargingStation();
-                    chargingStation.set_values(0, name, currentUser.get_email(), x, y, guarded, parking_spots, type2, wall, supercharger, outputkwh);
+                    chargingStation.set_values(0, name, currentUser.get_email(), x, y, guarded, parking_spots, type2, wall, supercharger, outputkwh, 3., 1); //default rating
 
                     Intent intent_result = new Intent();
                     intent_result.putExtra("charghingstation", chargingStation.serialize());

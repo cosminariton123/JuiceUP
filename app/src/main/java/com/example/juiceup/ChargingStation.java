@@ -19,6 +19,8 @@ public class ChargingStation {
     private Integer wall;
     private Integer supercharger;
     private Integer outputkwh;
+    private Double rating;
+    private Integer how_many_people_rated;
 
 
     public ChargingStation(){
@@ -31,10 +33,12 @@ public class ChargingStation {
         wall = 0;
         supercharger = 0;
         outputkwh = 0;
+        rating = 0.;
+        how_many_people_rated = 0;
     }
 
 
-    public void set_values(Integer i, String nam, String set_by, Double x, Double y, Integer guard, Integer parking, Integer type, Integer wal, Integer superch, Integer output){
+    public void set_values(Integer i, String nam, String set_by, Double x, Double y, Integer guard, Integer parking, Integer type, Integer wal, Integer superch, Integer output, Double ratingg, Integer how_many_people_ratedd){
 
         //Only 4 decimals allowed
         int aux = (int)(x * 10000.0);
@@ -54,6 +58,8 @@ public class ChargingStation {
         wall = wal;
         supercharger = superch;
         outputkwh = output;
+        how_many_people_rated = how_many_people_ratedd;
+        rating = ratingg;
     }
 
     public Integer get_id(){
@@ -105,6 +111,26 @@ public class ChargingStation {
         return  latLng;
     }
 
+    public void set_x_coordinate(Double x){
+        x_coordinate = x;
+    }
+
+    public void set_y_coordinate(Double y){
+        y_coordinate = y;
+    }
+
+    public void set_id(Integer idd){
+        id = idd;
+    }
+
+    public Double get_rating(){
+        return rating;
+    }
+
+    public Integer get_how_many_people_rated(){
+        return how_many_people_rated;
+    }
+
     public String serialize(){
         String serialized = "";
 
@@ -118,16 +144,18 @@ public class ChargingStation {
         serialized += type2.toString() + ",";
         serialized += wall.toString() + ",";
         serialized += supercharger.toString() + ",";
-        serialized += outputkwh.toString();
+        serialized += outputkwh.toString() + ",";
+        serialized += rating.toString() + ",";
+        serialized += how_many_people_rated.toString();
 
         return serialized;
     }
 
     public void deserialize_set(String serialized_data){
-        String[] vec = serialized_data.split(",", 100);
+        String[] vec = serialized_data.split(",", 1000);
 
         set_values(Integer.parseInt(vec[0]) , vec[1], vec[2], Double.parseDouble(vec[3]), Double.parseDouble(vec[4]),
-                Integer.parseInt(vec[5]), Integer.parseInt(vec[6]), Integer.parseInt(vec[7]), Integer.parseInt(vec[8]), Integer.parseInt(vec[9]), Integer.parseInt(vec[10]));
+                Integer.parseInt(vec[5]), Integer.parseInt(vec[6]), Integer.parseInt(vec[7]), Integer.parseInt(vec[8]), Integer.parseInt(vec[9]), Integer.parseInt(vec[10]), Double.parseDouble(vec[11]), Integer.parseInt(vec[12]));
     }
 
 }
