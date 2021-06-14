@@ -98,7 +98,7 @@ public class DistancesAndGeocodings {
         Queue<Integer> results = new LinkedList<Integer>();
         Queue<LatLng> buffer_coordinates = new LinkedList<LatLng>();
         while (!coordinates.isEmpty()){
-            if (counter < 600){  //POST METHOD FOR GOOGLE MAPS API ACCEPTS MAXIMUM ~8000 CHARACTERS => buffer_size should be 600 or less
+            if (counter < 150){  //GET METHOD FOR DISTANCEMATRIXAPI ACCEPTS MAXIMUM ~2000 CHARACTERS => buffer_size should be 150 or less
                 buffer_coordinates.add(coordinates.remove());
                 counter ++;
             }
