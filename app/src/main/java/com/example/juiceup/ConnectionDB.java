@@ -24,7 +24,7 @@ public class ConnectionDB {
     private ConnectionDB(){
 
 
-        ip = "192.168.56.1";
+        ip = "cosmincoco.go.ro";
         port = "1433";
         Driver = "net.sourceforge.jtds.jdbc.Driver";
         database = "juiceupdatabase";
